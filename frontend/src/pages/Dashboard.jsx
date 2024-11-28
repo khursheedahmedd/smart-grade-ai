@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
+    <div className="min-h-screen bg-gray-900 pt-16 pb-28 px-6 md:pt-20 md:pb-32 md:px-12">
       <motion.div
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -41,7 +41,7 @@ const Dashboard = () => {
         <div className="bg-gray-700 p-6 rounded-lg shadow-md mb-8">
           <h3 className="text-xl font-semibold mb-4">Interactive Progress Chart</h3>
           <div className="bg-gray-600 p-4 rounded text-center text-gray-300">
-            [Interactive Chart Placeholder] {/* You can replace this with a chart component */}
+            [Interactive Chart Placeholder] {/* Replace this with an actual chart component */}
           </div>
         </div>
 

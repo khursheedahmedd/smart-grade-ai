@@ -10,7 +10,7 @@ const ResultComparison = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-900 min-h-screen">
+    <div className="p-8 bg-gray-900 min-h-screen pt-16 pb-28 px-6 md:pt-20 md:pb-32 md:px-12">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

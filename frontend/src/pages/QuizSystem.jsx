@@ -32,7 +32,7 @@ const QuizSystem = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
+    <div className="min-h-screen bg-gray-900 pt-16 pb-28 px-6 md:pt-20 md:pb-32 md:px-12">
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
