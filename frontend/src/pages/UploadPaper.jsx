@@ -1,30 +1,55 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 const UploadPaper = () => {
   const [file, setFile] = useState(null);
+  const [prompt, setPrompt] = useState(""); // Prompt for grading strictness
   const [uploading, setUploading] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(null);
+  const [responseMessage, setResponseMessage] = useState(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    setUploadSuccess(null);  // Reset upload success message
+    setResponseMessage(null); // Reset response message
   };
 
-  const handleUpload = () => {
-    if (!file) return;
+  const handlePromptChange = (e) => {
+    setPrompt(e.target.value);
+    setResponseMessage(null); // Reset response message
+  };
+
+  const handleUpload = async () => {
+    if (!file || !prompt) {
+      setResponseMessage("Please select a file and enter a grading prompt.");
+      return;
+    }
 
     setUploading(true);
 
-    // Simulate file upload process
-    setTimeout(() => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("prompt", prompt);
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/process", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setResponseMessage(`Grading completed: ${JSON.stringify(data)}`);
+      } else {
+        setResponseMessage("Error processing the file. Please try again.");
+      }
+    } catch (error) {
+      setResponseMessage("Failed to connect to the server.");
+    } finally {
       setUploading(false);
-      setUploadSuccess('Paper uploaded and analyzed successfully!');
-    }, 2000); // Simulate a 2-second delay for upload
+    }
   };
 
   return (
-    <div className="p-8 bg-gray-900 min-h-screen pt-16 pb-28 px-6 md:pt-20 md:pb-32 md:px-12">
+    <div className="p-8 bg-gray-900 min-h-screen">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -34,7 +59,10 @@ const UploadPaper = () => {
         <h2 className="text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-gray-300">
           Upload Your Paper
         </h2>
-        <p className="text-gray-400 mb-6">Upload an image of the student's handwritten paper for AI grading and analysis.</p>
+        <p className="text-gray-400 mb-6">
+          Upload an image or PDF of the student's paper for AI grading and
+          analysis.
+        </p>
 
         {/* File Input Section */}
         <div className="mb-6">
@@ -44,7 +72,7 @@ const UploadPaper = () => {
           <input
             type="file"
             id="file-upload"
-            accept="image/*"
+            accept="image/*,.pdf"
             onChange={handleFileChange}
             className="w-full text-gray-700 p-3 bg-gray-700 border border-gray-600 rounded-md"
           />
@@ -53,13 +81,28 @@ const UploadPaper = () => {
           )}
         </div>
 
+        {/* Prompt Input Section */}
+        <div className="mb-6">
+          <label htmlFor="grading-prompt" className="block text-sm font-medium mb-2">
+            Grading Prompt
+          </label>
+          <input
+            type="text"
+            id="grading-prompt"
+            value={prompt}
+            onChange={handlePromptChange}
+            placeholder="Enter grading criteria, e.g., strict checking"
+            className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+          />
+        </div>
+
         {/* Upload Button */}
         <button
           onClick={handleUpload}
           className="w-full py-3 text-lg font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
           disabled={uploading}
         >
-          {uploading ? 'Uploading...' : 'Upload & Analyze'}
+          {uploading ? "Uploading..." : "Upload & Analyze"}
         </button>
 
         {/* Progress Bar Placeholder */}
@@ -70,14 +113,14 @@ const UploadPaper = () => {
         )}
 
         {/* Success/Error Message */}
-        {uploadSuccess && (
-          <div className="mt-6 p-4 bg-green-600 text-white rounded-md">
-            <p>{uploadSuccess}</p>
-          </div>
-        )}
-        {!uploadSuccess && !file && !uploading && (
-          <div className="mt-6 p-4 bg-gray-700 text-gray-300 rounded-md">
-            <p>Please choose a file to upload.</p>
+        {responseMessage && (
+          <div
+            className={`mt-6 p-4 ${responseMessage.startsWith("Grading completed")
+              ? "bg-green-600"
+              : "bg-red-600"
+              } text-white rounded-md`}
+          >
+            <p>{responseMessage}</p>
           </div>
         )}
       </motion.div>
