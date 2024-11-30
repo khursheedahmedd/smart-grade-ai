@@ -1,3 +1,5 @@
+// UploadPaper.js
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -14,16 +16,31 @@ const UploadPaper = () => {
   const handleKeyFileChange = (e) => {
     setKeyFile(e.target.files[0]);
     setResponseMessage(null);
+    setPdfUrl(null); // Reset PDF URL on new upload
   };
 
   const handleAnswerFileChange = (e) => {
     setAnswerFile(e.target.files[0]);
     setResponseMessage(null);
+    setPdfUrl(null); // Reset PDF URL on new upload
   };
 
   const handleCriteriaChange = (e) => {
     setCriteria(e.target.value);
     setResponseMessage(null);
+    setPdfUrl(null); // Reset PDF URL on criteria change
+  };
+
+  const handleStudentNameChange = (e) => {
+    setStudentName(e.target.value);
+    setResponseMessage(null);
+    setPdfUrl(null); // Reset PDF URL on name change
+  };
+
+  const handleExamTitleChange = (e) => {
+    setExamTitle(e.target.value);
+    setResponseMessage(null);
+    setPdfUrl(null); // Reset PDF URL on exam title change
   };
 
   const handleUpload = async () => {
@@ -33,6 +50,8 @@ const UploadPaper = () => {
     }
 
     setUploading(true);
+    setResponseMessage(null);
+    setPdfUrl(null);
 
     const formData = new FormData();
     formData.append("key_file", keyFile);
@@ -51,7 +70,7 @@ const UploadPaper = () => {
         const data = await response.json();
         setResponseMessage(`Grading completed successfully.`);
         setPdfUrl(data.pdf_url); // Set the PDF URL
-        // Handle 'data.results' as needed
+        // You can handle 'data.results' as needed, e.g., display them on the page
       } else {
         const errorData = await response.json();
         setResponseMessage(`Error: ${errorData.message}`);
@@ -87,7 +106,7 @@ const UploadPaper = () => {
             type="text"
             id="student-name"
             value={studentName}
-            onChange={(e) => setStudentName(e.target.value)}
+            onChange={handleStudentNameChange}
             className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
           />
         </div>
@@ -101,7 +120,7 @@ const UploadPaper = () => {
             type="text"
             id="exam-title"
             value={examTitle}
-            onChange={(e) => setExamTitle(e.target.value)}
+            onChange={handleExamTitleChange}
             className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
           />
         </div>

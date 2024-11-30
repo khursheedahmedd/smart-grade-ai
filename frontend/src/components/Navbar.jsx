@@ -24,11 +24,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`${
-        isScrolled
+      className={`${isScrolled
           ? 'bg-gradient-to-r from-gray-700 via-gray-800 to-black shadow-lg'
           : 'bg-gradient-to-r from-gray-800 via-gray-900 to-black'
-      } fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out`}
+        } fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out`}
     >
       <div className="container mx-auto flex justify-between items-center p-4">
         {/* Logo Section */}
@@ -59,6 +58,22 @@ const Navbar = () => {
               className="text-white hover:text-gray-400 transition duration-300"
             >
               Upload Paper
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/teacher/upload"
+              className="text-white hover:text-gray-400 transition duration-300"
+            >
+              Teacher Upload
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/upload_answer/:key_id"
+              className="text-white hover:text-gray-400 transition duration-300"
+            >
+              Student Upload
             </Link>
           </li>
           <li>

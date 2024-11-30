@@ -7,6 +7,8 @@ import UploadPaper from './pages/UploadPaper';
 import ResultComparison from './pages/ResultComparison';
 import QuizSystem from './pages/QuizSystem';
 import Dashboard from './pages/Dashboard';
+import TeacherUpload from './pages/TeacherUpload';
+import StudentUpload from './pages/StudentUpload';
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
         <Route path="/result-comparison" element={<ResultComparison />} />
         <Route path="/quiz-system" element={<QuizSystem />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/teacher/upload" element={<TeacherUpload />} />
+        <Route path="/upload_answer/:key_id" element={<StudentUpload />} />
       </Routes>
       <Footer />
     </Router>
