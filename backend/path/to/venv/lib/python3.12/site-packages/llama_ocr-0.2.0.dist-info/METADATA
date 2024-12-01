@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: llama_ocr
+Version: 0.2.0
+Summary: OCR using LLAMA vision model, allowing configuring any OpenAI compliant endpoints and model names.
+Author-email: Lyon Liang <ll_nwpu@qq.com>
+Maintainer-email: Lyon Liang <ll_nwpu@qq.com>
+License: MIT license
+Project-URL: bugs, https://github.com/1WorldCapture/llama_ocr/issues
+Project-URL: changelog, https://github.com/1WorldCapture/llama_ocr/blob/master/changelog.md
+Project-URL: homepage, https://github.com/1WorldCapture/llama_ocr
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: typer
+Requires-Dist: openai >=1.0.0
+Requires-Dist: pillow >=10.0.0
+Requires-Dist: python-dotenv >=1.0.0
+Provides-Extra: dev
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: ruff ; extra == 'dev'
+
+=========
+LLAMA OCR
+=========
+
+Using LLAMA Vision Model for OCR, allowing configuring any OpenAI compliant endpoints and model names. This is the python version of `llama-ocr <https://github.com/Nutlope/llama-ocr/tree/main>`_.
+
+
+* Free software: MIT license
+
+Installation
+------------
+
+.. code-block:: bash
+
+    pip install llama-ocr
+
+Usage
+--------
+
+.. code-block:: python
+
+    from llama_ocr import ocr
+
+    data = ocr(
+      file_path="./test.png", 
+      api_key="xxxxx",
+      base_url="https://openrouter.ai/api",
+      model="meta-llama/llama-3.2-11b-vision-instruct:free"
+    ) 
+    # file_path: Path to the image file
+    # api_key: Your LLM API key
+    # base_url: The base URL of the LLM API
+    # model: The model to use
+
+By default, this project will use the free model from OpenRouter. So you just need to provide your API key and image path.
+
+Credits
+-------
+
+This package was created with `Cookiecutter <https://github.com/audreyr/cookiecutter>`_ and the `audreyr/cookiecutter-pypackage <https://github.com/audreyr/cookiecutter-pypackage>`_ project template.
