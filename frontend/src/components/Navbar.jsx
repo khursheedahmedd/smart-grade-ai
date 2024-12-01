@@ -65,7 +65,16 @@ const Navbar = () => {
               className={`${isActiveLink('/upload-paper') ? 'text-green-600 font-semibold' : 'text-gray-800'
                 } transition-colors hover:text-green-500`}
             >
-              Upload Paper
+              Instant Checking
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/teacher/upload"
+              className={`${isActiveLink('/about-us') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                } transition-colors hover:text-green-500`}
+            >
+              Bulk Checking
             </Link>
           </li>
           <li>
@@ -81,7 +90,7 @@ const Navbar = () => {
 
         {/* Buttons Section */}
         <div className="hidden md:flex space-x-4">
-          <button className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg shadow-md hover:bg-green-700 transition">
+          <button className="px-4 py-2 transform hover:scale-105 bg-gradient-to-r from-green-600 to-green-400 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:ring-2 hover:ring-green-600 text-white text-sm rounded-lg shadow-md transition">
             Free Demo
           </button>
           <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition">
@@ -131,7 +140,17 @@ const Navbar = () => {
                   } transition hover:text-green-500`}
                 onClick={closeMenu}
               >
-                Upload Paper
+                Instant Checking
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="//teacher/upload"
+                className={`${isActiveLink('/about-us') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                  } transition hover:text-green-500`}
+                onClick={closeMenu}
+              >
+                Bulk Checking
               </Link>
             </li>
             <li>

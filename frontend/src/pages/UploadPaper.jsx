@@ -66,7 +66,7 @@ const UploadPaper = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setResponseMessage(`Grading completed successfully.`);
+        setResponseMessage("Grading completed successfully.");
         setPdfUrl(data.pdf_url);
       } else {
         const errorData = await response.json();
@@ -83,7 +83,6 @@ const UploadPaper = () => {
     if (!file) return null;
 
     if (file.type.startsWith("image/")) {
-      // Preview for images
       return (
         <img
           src={URL.createObjectURL(file)}
@@ -94,7 +93,6 @@ const UploadPaper = () => {
     }
 
     if (file.type === "application/pdf") {
-      // Preview for PDFs
       return (
         <p className="mt-2 text-gray-300">
           <i className="fas fa-file-pdf text-red-500 mr-2"></i>
@@ -103,28 +101,29 @@ const UploadPaper = () => {
       );
     }
 
-    return null; // For unsupported types
+    return null;
   };
 
   return (
-    <div className="p-6 sm:p-8 bg-gray-900 min-h-screen">
+    <div className="min-h-screen bg-white text-black py-12 px-6 sm:px-8">
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="max-w-4xl mx-auto bg-gray-800 p-6 sm:p-8 shadow-lg rounded-lg text-white mt-16"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="max-w-4xl mx-auto bg-gray-100 p-8 sm:p-10 shadow-lg rounded-lg mt-16 py-8"
       >
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-gray-300">
+        <h2 className="text-3xl sm:text-4xl font-semibold text-center text-black mb-6">
           Upload Exam Key and Student's Answer
         </h2>
-        <p className="text-gray-400 mb-6">
+
+        <p className="text-lg text-gray-600 text-center mb-8">
           Upload the exam key and the student's answer for AI grading and analysis.
         </p>
 
         {/* Student Name and Exam Title */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
-            <label htmlFor="student-name" className="block text-sm font-medium mb-2">
+            <label htmlFor="student-name" className="block text-sm font-medium text-gray-700 mb-2">
               Student Name
             </label>
             <input
@@ -132,11 +131,11 @@ const UploadPaper = () => {
               id="student-name"
               value={studentName}
               onChange={handleStudentNameChange}
-              className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+              className="w-full px-4 py-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:ring "
             />
           </div>
           <div>
-            <label htmlFor="exam-title" className="block text-sm font-medium mb-2">
+            <label htmlFor="exam-title" className="block text-sm font-medium text-gray-700 mb-2">
               Exam Title
             </label>
             <input
@@ -144,7 +143,7 @@ const UploadPaper = () => {
               id="exam-title"
               value={examTitle}
               onChange={handleExamTitleChange}
-              className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+              className="w-full px-4 py-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:ring"
             />
           </div>
         </div>
@@ -154,7 +153,7 @@ const UploadPaper = () => {
           <div className="text-center">
             <button
               onClick={() => document.getElementById("key-file-upload").click()}
-              className="py-3 px-6 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+              className="py-3 px-6 font-semibold rounded-md bg-gradient-to-r from-green-600 to-green-400 text-white transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:ring-2 hover:ring-green-600 "
             >
               Choose Exam Key File
             </button>
@@ -171,7 +170,7 @@ const UploadPaper = () => {
           <div className="text-center">
             <button
               onClick={() => document.getElementById("answer-file-upload").click()}
-              className="py-3 px-6 w-full bg-green-600 text-white font-semibold rounded-md hover:bg-green-700"
+              className="py-3 px-6 bg-gradient-to-r from-green-600 to-green-400 text-white transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:ring-2 hover:ring-green-600  font-semibold rounded-md"
             >
               Choose Student Answer File
             </button>
@@ -188,14 +187,14 @@ const UploadPaper = () => {
 
         {/* Grading Criteria */}
         <div className="mb-6">
-          <label htmlFor="grading-criteria" className="block text-sm font-medium mb-2">
+          <label htmlFor="grading-criteria" className="block text-sm font-medium text-gray-700 mb-2">
             Grading Criteria
           </label>
           <select
             id="grading-criteria"
             value={criteria}
             onChange={handleCriteriaChange}
-            className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+            className="w-full px-4 py-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:ring focus:ring-green-500"
           >
             <option value="">Select Criteria</option>
             <option value="strict">Strict</option>
@@ -207,7 +206,7 @@ const UploadPaper = () => {
         {/* Upload Button */}
         <button
           onClick={handleUpload}
-          className="w-full py-3 text-lg font-semibold text-white bg-yellow-600 rounded-md hover:bg-yellow-700 focus:outline-none"
+          className="w-full py-3 text-lg font-semibold text-white  bg-blue-500 rounded-md hover:bg-blue-600 focus:ring focus:ring-blue-500"
           disabled={uploading}
         >
           {uploading ? "Uploading..." : "Upload & Analyze"}
@@ -216,10 +215,10 @@ const UploadPaper = () => {
         {/* Response Message */}
         {responseMessage && (
           <div
-            className={`mt-6 p-4 ${responseMessage.startsWith("Grading completed")
-              ? "bg-green-600"
-              : "bg-red-600"
-              } text-white rounded-md`}
+            className={`mt-6 p-4 rounded-md ${responseMessage.startsWith("Grading completed")
+              ? "bg-green-100 text-gray-900"
+              : "bg-red-500 text-white"
+              }`}
           >
             <p>{responseMessage}</p>
           </div>
@@ -232,7 +231,7 @@ const UploadPaper = () => {
               href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              className="inline-block px-6 py-3 text-lg font-semibold text-white bg-green-500 rounded-md hover:bg-green-600"
             >
               Download Grading Report
             </a>
