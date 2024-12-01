@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Logo from '../assets/logo.png'; // Ensure the logo path is correct
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate()
 
   // Handle scroll state
   useEffect(() => {
@@ -22,6 +24,10 @@ const Navbar = () => {
   // Close the menu when clicking outside
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
   };
 
   // Check if the current link is active
@@ -90,10 +96,14 @@ const Navbar = () => {
 
         {/* Buttons Section */}
         <div className="hidden md:flex space-x-4">
-          <button className="px-4 py-2 transform hover:scale-105 bg-gradient-to-r from-green-600 to-green-400 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:ring-2 hover:ring-green-600 text-white text-sm rounded-lg shadow-md transition">
+          <button className="px-4 py-2 transform hover:scale-105 bg-gradient-to-r from-green-600 to-green-400 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:ring-2 hover:ring-green-600 text-white text-sm rounded-lg shadow-md transition"
+            onClick={() => handleNavigation("/upload-paper")}
+          >
             Free Demo
           </button>
-          <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition">
+          <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition"
+            onClick={() => handleNavigation("/about-us")}
+          >
             Explore
           </button>
         </div>
@@ -165,10 +175,16 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="flex flex-col space-y-4 mt-6 px-6">
-            <button className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg shadow-md hover:bg-green-700 transition">
+            <button
+              onClick={() => handleNavigation("/upload-paper")}
+              className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg shadow-md hover:bg-green-700 transition"
+            >
               Free Demo
             </button>
-            <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition">
+            <button
+              onClick={() => handleNavigation("/about-us")}
+              className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition"
+            >
               Explore
             </button>
           </div>

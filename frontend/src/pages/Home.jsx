@@ -34,7 +34,7 @@ const Home = () => {
         {/* Buttons Section */}
         <div className="flex justify-center">
           <a
-            href="/explore"
+            href="/upload-paper"
             className="relative inline-block px-12 py-3 bg-gradient-to-r from-green-600 to-green-400 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:ring-2 hover:ring-green-600 w-full sm:w-auto"
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
@@ -42,7 +42,7 @@ const Home = () => {
             {/* Background link */}
             <span className="absolute inset-0 -z-10">
               <a
-                href="/about-us"
+                href="/upload-paper"
                 className="block w-full h-full"
                 aria-label="Explore background link"
               ></a>
