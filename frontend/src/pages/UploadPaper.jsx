@@ -1,46 +1,44 @@
-// UploadPaper.js
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const UploadPaper = () => {
   const [keyFile, setKeyFile] = useState(null);
   const [answerFile, setAnswerFile] = useState(null);
-  const [criteria, setCriteria] = useState(""); // Grading criteria
+  const [criteria, setCriteria] = useState("");
   const [studentName, setStudentName] = useState("");
   const [examTitle, setExamTitle] = useState("");
   const [uploading, setUploading] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
-  const [pdfUrl, setPdfUrl] = useState(null); // PDF URL
+  const [pdfUrl, setPdfUrl] = useState(null);
 
   const handleKeyFileChange = (e) => {
     setKeyFile(e.target.files[0]);
     setResponseMessage(null);
-    setPdfUrl(null); // Reset PDF URL on new upload
+    setPdfUrl(null);
   };
 
   const handleAnswerFileChange = (e) => {
     setAnswerFile(e.target.files[0]);
     setResponseMessage(null);
-    setPdfUrl(null); // Reset PDF URL on new upload
+    setPdfUrl(null);
   };
 
   const handleCriteriaChange = (e) => {
     setCriteria(e.target.value);
     setResponseMessage(null);
-    setPdfUrl(null); // Reset PDF URL on criteria change
+    setPdfUrl(null);
   };
 
   const handleStudentNameChange = (e) => {
     setStudentName(e.target.value);
     setResponseMessage(null);
-    setPdfUrl(null); // Reset PDF URL on name change
+    setPdfUrl(null);
   };
 
   const handleExamTitleChange = (e) => {
     setExamTitle(e.target.value);
     setResponseMessage(null);
-    setPdfUrl(null); // Reset PDF URL on exam title change
+    setPdfUrl(null);
   };
 
   const handleUpload = async () => {
@@ -69,8 +67,7 @@ const UploadPaper = () => {
       if (response.ok) {
         const data = await response.json();
         setResponseMessage(`Grading completed successfully.`);
-        setPdfUrl(data.pdf_url); // Set the PDF URL
-        // You can handle 'data.results' as needed, e.g., display them on the page
+        setPdfUrl(data.pdf_url);
       } else {
         const errorData = await response.json();
         setResponseMessage(`Error: ${errorData.message}`);
@@ -82,84 +79,114 @@ const UploadPaper = () => {
     }
   };
 
+  const renderFilePreview = (file) => {
+    if (!file) return null;
+
+    if (file.type.startsWith("image/")) {
+      // Preview for images
+      return (
+        <img
+          src={URL.createObjectURL(file)}
+          alt="Preview"
+          className="mt-2 w-full max-h-48 object-contain border border-gray-600 rounded-md"
+        />
+      );
+    }
+
+    if (file.type === "application/pdf") {
+      // Preview for PDFs
+      return (
+        <p className="mt-2 text-gray-300">
+          <i className="fas fa-file-pdf text-red-500 mr-2"></i>
+          {file.name}
+        </p>
+      );
+    }
+
+    return null; // For unsupported types
+  };
+
   return (
-    <div className="p-8 bg-gray-900 min-h-screen py-[12rem]">
+    <div className="p-6 sm:p-8 bg-gray-900 min-h-screen">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="max-w-3xl mx-auto bg-gray-800 p-8 shadow-lg rounded-lg text-white"
+        className="max-w-4xl mx-auto bg-gray-800 p-6 sm:p-8 shadow-lg rounded-lg text-white mt-16"
       >
-        <h2 className="text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-gray-300">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-gray-300">
           Upload Exam Key and Student's Answer
         </h2>
         <p className="text-gray-400 mb-6">
           Upload the exam key and the student's answer for AI grading and analysis.
         </p>
 
-        {/* Student Name Input */}
-        <div className="mb-6">
-          <label htmlFor="student-name" className="block text-sm font-medium mb-2">
-            Student Name
-          </label>
-          <input
-            type="text"
-            id="student-name"
-            value={studentName}
-            onChange={handleStudentNameChange}
-            className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
-          />
+        {/* Student Name and Exam Title */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label htmlFor="student-name" className="block text-sm font-medium mb-2">
+              Student Name
+            </label>
+            <input
+              type="text"
+              id="student-name"
+              value={studentName}
+              onChange={handleStudentNameChange}
+              className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+            />
+          </div>
+          <div>
+            <label htmlFor="exam-title" className="block text-sm font-medium mb-2">
+              Exam Title
+            </label>
+            <input
+              type="text"
+              id="exam-title"
+              value={examTitle}
+              onChange={handleExamTitleChange}
+              className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+            />
+          </div>
         </div>
 
-        {/* Exam Title Input */}
-        <div className="mb-6">
-          <label htmlFor="exam-title" className="block text-sm font-medium mb-2">
-            Exam Title
-          </label>
-          <input
-            type="text"
-            id="exam-title"
-            value={examTitle}
-            onChange={handleExamTitleChange}
-            className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
-          />
+        {/* File Upload Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          <div className="text-center">
+            <button
+              onClick={() => document.getElementById("key-file-upload").click()}
+              className="py-3 px-6 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+            >
+              Choose Exam Key File
+            </button>
+            <input
+              type="file"
+              id="key-file-upload"
+              accept="image/*,.pdf"
+              onChange={handleKeyFileChange}
+              className="hidden"
+            />
+            {renderFilePreview(keyFile)}
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={() => document.getElementById("answer-file-upload").click()}
+              className="py-3 px-6 w-full bg-green-600 text-white font-semibold rounded-md hover:bg-green-700"
+            >
+              Choose Student Answer File
+            </button>
+            <input
+              type="file"
+              id="answer-file-upload"
+              accept="image/*,.pdf"
+              onChange={handleAnswerFileChange}
+              className="hidden"
+            />
+            {renderFilePreview(answerFile)}
+          </div>
         </div>
 
-        {/* Exam Key File Input */}
-        <div className="mb-6">
-          <label htmlFor="key-file-upload" className="block text-sm font-medium mb-2">
-            Exam Key File
-          </label>
-          <input
-            type="file"
-            id="key-file-upload"
-            accept="image/*,.pdf"
-            onChange={handleKeyFileChange}
-            className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
-          />
-          {keyFile && (
-            <p className="text-gray-300 mt-2">{`Selected file: ${keyFile.name}`}</p>
-          )}
-        </div>
-
-        {/* Student's Answer File Input */}
-        <div className="mb-6">
-          <label htmlFor="answer-file-upload" className="block text-sm font-medium mb-2">
-            Student's Answer File
-          </label>
-          <input
-            type="file"
-            id="answer-file-upload"
-            accept="image/*,.pdf"
-            onChange={handleAnswerFileChange}
-            className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
-          />
-          {answerFile && (
-            <p className="text-gray-300 mt-2">{`Selected file: ${answerFile.name}`}</p>
-          )}
-        </div>
-
-        {/* Grading Criteria Selection */}
+        {/* Grading Criteria */}
         <div className="mb-6">
           <label htmlFor="grading-criteria" className="block text-sm font-medium mb-2">
             Grading Criteria
@@ -180,25 +207,18 @@ const UploadPaper = () => {
         {/* Upload Button */}
         <button
           onClick={handleUpload}
-          className="w-full py-3 text-lg font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="w-full py-3 text-lg font-semibold text-white bg-yellow-600 rounded-md hover:bg-yellow-700 focus:outline-none"
           disabled={uploading}
         >
           {uploading ? "Uploading..." : "Upload & Analyze"}
         </button>
 
-        {/* Progress Bar Placeholder */}
-        {uploading && (
-          <div className="mt-4 w-full bg-gray-600 rounded-full">
-            <div className="h-2 bg-gray-500 rounded-full animate-pulse"></div>
-          </div>
-        )}
-
-        {/* Success/Error Message */}
+        {/* Response Message */}
         {responseMessage && (
           <div
             className={`mt-6 p-4 ${responseMessage.startsWith("Grading completed")
-                ? "bg-green-600"
-                : "bg-red-600"
+              ? "bg-green-600"
+              : "bg-red-600"
               } text-white rounded-md`}
           >
             <p>{responseMessage}</p>
@@ -212,7 +232,7 @@ const UploadPaper = () => {
               href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="inline-block px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700"
             >
               Download Grading Report
             </a>

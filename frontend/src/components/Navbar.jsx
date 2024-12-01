@@ -1,53 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Logo from '../assets/logo.png'; // Ensure the logo path is correct
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   // Handle scroll state
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  // Close the menu when clicking outside
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Check if the current link is active
+  const isActiveLink = (path) => location.pathname === path;
+
   return (
     <nav
-      className={`${isScrolled
-          ? 'bg-gradient-to-r from-gray-700 via-gray-800 to-black shadow-lg'
-          : 'bg-gradient-to-r from-gray-800 via-gray-900 to-black'
-        } fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        }`}
     >
-      <div className="container mx-auto flex justify-between items-center p-4">
+      <div className="container mx-auto flex justify-between items-center px-6 py-4 md:px-10">
         {/* Logo Section */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center space-x-3"
         >
-          <h1 className="text-2xl font-bold text-white">
-            SmartGrade AI
-          </h1>
+          <Link to="/">
+            <img
+              src={Logo}
+              alt="SmartGrade AI Logo"
+              className="w-40 h-12 object-contain drop-shadow-lg"
+            />
+          </Link>
         </motion.div>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6">
+        <ul className="hidden md:flex space-x-8 font-medium text-sm">
           <li>
             <Link
               to="/"
-              className="text-white hover:text-gray-400 transition duration-300"
+              className={`${isActiveLink('/') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                } transition-colors hover:text-green-500`}
             >
               Home
             </Link>
@@ -55,56 +62,36 @@ const Navbar = () => {
           <li>
             <Link
               to="/upload-paper"
-              className="text-white hover:text-gray-400 transition duration-300"
+              className={`${isActiveLink('/upload-paper') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                } transition-colors hover:text-green-500`}
             >
               Upload Paper
             </Link>
           </li>
           <li>
             <Link
-              to="/teacher/upload"
-              className="text-white hover:text-gray-400 transition duration-300"
+              to="/about-us"
+              className={`${isActiveLink('/about-us') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                } transition-colors hover:text-green-500`}
             >
-              Teacher Upload
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/upload_answer/:key_id"
-              className="text-white hover:text-gray-400 transition duration-300"
-            >
-              Student Upload
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/result-comparison"
-              className="text-white hover:text-gray-400 transition duration-300"
-            >
-              Compare Results
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/quiz-system"
-              className="text-white hover:text-gray-400 transition duration-300"
-            >
-              Quiz System
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/dashboard"
-              className="text-white hover:text-gray-400 transition duration-300"
-            >
-              Dashboard
+              About Us
             </Link>
           </li>
         </ul>
 
+        {/* Buttons Section */}
+        <div className="hidden md:flex space-x-4">
+          <button className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg shadow-md hover:bg-green-700 transition">
+            Free Demo
+          </button>
+          <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition">
+            Explore
+          </button>
+        </div>
+
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded shadow hover:scale-105 transform transition-all"
+          className="md:hidden px-3 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? 'Close' : 'Menu'}
@@ -114,17 +101,25 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="md:hidden bg-gradient-to-r from-gray-700 via-gray-800 to-black shadow-md"
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          className="md:hidden fixed top-0 right-0 bg-white w-3/4 h-full shadow-lg z-40"
         >
-          <ul className="flex flex-col space-y-4 p-4">
+          <button
+            onClick={closeMenu}
+            className="absolute top-4 right-4 text-2xl text-gray-800"
+          >
+            &times;
+          </button>
+          <ul className="flex flex-col space-y-6 p-6 font-medium text-base">
             <li>
               <Link
                 to="/"
-                className="block text-white hover:text-gray-400 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
+                className={`${isActiveLink('/') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                  } transition hover:text-green-500`}
+                onClick={closeMenu}
               >
                 Home
               </Link>
@@ -132,42 +127,45 @@ const Navbar = () => {
             <li>
               <Link
                 to="/upload-paper"
-                className="block text-white hover:text-gray-400 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
+                className={`${isActiveLink('/upload-paper') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                  } transition hover:text-green-500`}
+                onClick={closeMenu}
               >
                 Upload Paper
               </Link>
             </li>
             <li>
               <Link
-                to="/result-comparison"
-                className="block text-white hover:text-gray-400 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
+                to="/about-us"
+                className={`${isActiveLink('/about-us') ? 'text-green-600 font-semibold' : 'text-gray-800'
+                  } transition hover:text-green-500`}
+                onClick={closeMenu}
               >
-                Compare Results
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/quiz-system"
-                className="block text-white hover:text-gray-400 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Quiz System
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/dashboard"
-                className="block text-white hover:text-gray-400 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Dashboard
+                About Us
               </Link>
             </li>
           </ul>
+          <div className="flex flex-col space-y-4 mt-6 px-6">
+            <button className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg shadow-md hover:bg-green-700 transition">
+              Free Demo
+            </button>
+            <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-md hover:bg-gray-900 transition">
+              Explore
+            </button>
+          </div>
         </motion.div>
       )}
+
+      {/* Overlay */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-30"
+          onClick={closeMenu}
+        />
+      )}
+
+      {/* Bottom Line */}
+      <div className="border-t border-gray-300"></div>
     </nav>
   );
 };

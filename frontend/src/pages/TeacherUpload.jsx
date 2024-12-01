@@ -44,46 +44,92 @@ const TeacherUpload = () => {
         }
     };
 
+    const renderFilePreview = (file) => {
+        if (!file) return null;
+
+        if (file.type.startsWith("image/")) {
+            // Preview for images
+            return (
+                <img
+                    src={URL.createObjectURL(file)}
+                    alt="Preview"
+                    className="mt-4 w-full max-h-48 object-contain border border-gray-600 rounded-md"
+                />
+            );
+        }
+
+        if (file.type === "application/pdf") {
+            // Preview for PDFs
+            return (
+                <div className="mt-4 flex items-center space-x-2 text-gray-300">
+                    <i className="fas fa-file-pdf text-red-500"></i>
+                    <span>{file.name}</span>
+                </div>
+            );
+        }
+
+        return null; // For unsupported types
+    };
+
     return (
-        <div className="p-8 bg-gray-900 min-h-screen py-[12rem]">
-            <div className="max-w-3xl mx-auto bg-gray-800 p-8 shadow-lg rounded-lg text-white">
-                <h2 className="text-3xl font-bold mb-4">
+        <div className="p-6 sm:p-8 bg-gray-900 min-h-screen">
+            <div className="max-w-3xl mx-auto bg-gray-800 p-6 sm:p-8 shadow-lg rounded-lg text-white mt-16">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-gray-300">
                     Upload Answer Key
                 </h2>
-                <div className="mb-6">
-                    <label htmlFor="key-file-upload" className="block text-sm font-medium mb-2">
-                        Answer Key File
-                    </label>
+                <p className="text-gray-400 mb-6">
+                    Upload the answer key file to generate a unique link for students.
+                </p>
+
+                {/* File Upload Section */}
+                <div className="text-center">
+                    <button
+                        onClick={() => document.getElementById("key-file-upload").click()}
+                        className="py-3 px-6 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+                    >
+                        Choose Answer Key File
+                    </button>
                     <input
                         type="file"
                         id="key-file-upload"
                         accept="image/*,.pdf"
                         onChange={handleKeyFileChange}
-                        className="w-full text-gray-100 p-3 bg-gray-700 border border-gray-600 rounded-md"
+                        className="hidden"
                     />
-                    {keyFile && (
-                        <p className="text-gray-300 mt-2">{`Selected file: ${keyFile.name}`}</p>
-                    )}
+                    {renderFilePreview(keyFile)}
                 </div>
 
+                {/* Upload Button */}
                 <button
                     onClick={handleUpload}
-                    className="w-full py-3 text-lg font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700"
+                    className="w-full py-3 mt-6 text-lg font-semibold text-white bg-yellow-600 rounded-md hover:bg-yellow-700"
                     disabled={uploading}
                 >
                     {uploading ? "Uploading..." : "Upload Answer Key"}
                 </button>
 
+                {/* Response Message */}
                 {responseMessage && (
-                    <div className="mt-6 p-4 bg-green-600 text-white rounded-md">
+                    <div
+                        className={`mt-6 p-4 ${responseMessage.startsWith("Answer key uploaded")
+                                ? "bg-green-600"
+                                : "bg-red-600"
+                            } text-white rounded-md`}
+                    >
                         <p>{responseMessage}</p>
                     </div>
                 )}
 
+                {/* Unique Link */}
                 {uniqueLink && (
                     <div className="mt-6 p-4 bg-gray-700 text-white rounded-md">
                         <p>Share this link with your students:</p>
-                        <a href={uniqueLink} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                        <a
+                            href={uniqueLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 underline break-all"
+                        >
                             {uniqueLink}
                         </a>
                     </div>

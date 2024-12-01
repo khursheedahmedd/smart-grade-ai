@@ -9,6 +9,7 @@ import QuizSystem from './pages/QuizSystem';
 import Dashboard from './pages/Dashboard';
 import TeacherUpload from './pages/TeacherUpload';
 import StudentUpload from './pages/StudentUpload';
+import AboutUs from './pages/AboutUs';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/teacher/upload" element={<TeacherUpload />} />
         <Route path="/upload_answer/:key_id" element={<StudentUpload />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
       <Footer />
     </Router>
