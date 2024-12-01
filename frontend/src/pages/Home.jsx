@@ -57,14 +57,14 @@ const Home = () => {
       </section>
 
       {/* ImageCard Section */}
-      <section className="py-16 sm:py-20 lg:py-28 bg-white">
-        <ImageCard /> {/* Using the ImageCard component here */}
-      </section>
+      {/* <section className="py-16 sm:py-20 lg:py-28 bg-white">
+        <ImageCard />
+      </section> */}
 
       {/* Testimonials Section */}
-      <section className="py-16 sm:py-20 lg:py-28">
+      {/* <section className="py-16 sm:py-20 lg:py-28">
         <FeatureCard />
-      </section>
+      </section> */}
 
       {/* Logo Slider Section */}
       <section className="bg-white py-28 sm:py-32 lg:py-40">
