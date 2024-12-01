@@ -38,40 +38,38 @@ def process_with_gemma(text):
     print("Extracted question text: ", processed_text)
     return processed_text
 
+
 def extract_qa_pairs(processed_text):
     """
     Extract question-answer pairs from the processed text and return a list of tuples.
     """
     # Split the text into sections using the '>>>>>>' separator
-    sections = [section.strip() for section in processed_text.split('>>>>>>') if section.strip()]
+    sections = [section.strip() for section in processed_text.split('>>>>>') if section.strip()]
     qa_pairs = []
 
     for section in sections:
-        # Remove any leading/trailing whitespace
-        section = section.strip()
-        if not section:
-            continue  # Skip empty sections
-
         # Attempt to split the section into question and answer
         if '\nAnswer:' in section:
             question_part, answer_part = section.split('\nAnswer:', 1)
         else:
             # If 'Answer:' not found, assume the first line is the question
-            lines = section.split('\n')
+            lines = section.split('\n', 1)  # Split on the first newline only
             question_part = lines[0].strip()
-            answer_part = '\n'.join(lines[1:]).strip()
+            answer_part = lines[1].strip() if len(lines) > 1 else ""
 
         # Clean up question and answer
         question = question_part.strip()
         answer = answer_part.strip()
 
-        if question:
+        if question and answer:
             qa_pairs.append((question, answer))
-        else:
-            print(f"Could not parse question-answer pair in section: {section}")
+        elif question:  # If there's only a question and no answer
+            qa_pairs.append((question, ""))
 
     print(f"Question-answer pairs: {qa_pairs}")
     return qa_pairs
+
+
 
 def grade_answers(key_text, answer_text, total_marks, grading_criteria):
     """
@@ -122,7 +120,7 @@ def grade_with_llm(question, correct_answer, student_answer, total_mark, grading
         f"Student's Answer:\n{student_answer}\n\n"
         f"Grading Criteria: {grading_criteria.capitalize()}.\n"
         f"Total Marks: {total_mark}.\n\n"
-        "Provide the marks awarded (numeric value) and a one-line feedback to the student. "
+        "Provide the marks awarded (numeric value) and a detailed feedback to the student for his answer compared to the correct answer. It should be very precise and no other information outside the content shared should be used.\n\n "
         "Your response should be in the following format:\n"
         "Marks Awarded: X\nFeedback: Your feedback here."
     )
