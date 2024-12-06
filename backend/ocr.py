@@ -73,7 +73,7 @@ def perform_ocr_on_image(image_path):
                     ],
                 }
             ],
-            model="llama-3.2-90b-vision-preview",
+            model="paligemma2-10b-ft-docci-448",
         )
 
         # Extract the OCR text from the response
