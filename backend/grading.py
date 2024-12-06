@@ -18,7 +18,7 @@ def process_with_gemma(text):
     )
     # Create the completion request
     completion = client.chat.completions.create(
-        model="llama3-groq-70b-8192-tool-use-preview",
+        model="gemma-7b-it",
         messages=[
             {
                 "role": "user",
