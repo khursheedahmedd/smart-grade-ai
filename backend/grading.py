@@ -127,7 +127,7 @@ def grade_with_llm(question, correct_answer, student_answer, total_mark, grading
 
     # Create the completion request
     completion = client.chat.completions.create(
-        model="llama3-groq-70b-8192-tool-use-preview",
+        model="gemma-7b-it",
         messages=[
             {
                 "role": "user",
